@@ -1,20 +1,24 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux'
 import HeroesList from "./sections/heroes/HeroesList";
 
+import * as webservices from "./webservices/webservices";
+
 export default class App extends Component {
+
+    componentWillMount(){
+        webservices.configureAxios()
+    }
+
+
   render() {
     return (
         <Router>
           <Scene key='root'>
-            <Scene key='heroesList' component={HeroesList}/>
+            <Scene key='heroesList'
+                   component={ HeroesList }/>
           </Scene>
         </Router>
     );
