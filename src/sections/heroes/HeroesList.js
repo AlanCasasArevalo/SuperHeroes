@@ -1,38 +1,54 @@
 import React, {Component} from 'react'
 import {FlatList, StyleSheet, Text, View} from "react-native";
-import * as axios from "axios";
 import * as AsyncCalls from "../../commons/AsyncCalls";
+import { fetch } from '../../webservices/webservices'
+import HeroesCell from './HeroesCell'
 
 export default class HeroesList extends Component{
 
     constructor(props){
         super(props)
         this.state = {
-            list : []
+            list : [],
+            selected: null
         }
     }
 
     componentWillMount(){
-        AsyncCalls.fetchSuperHeroes()
+        fetch('/getAllHeroes')
+            .then(response =>{
+                console.log("Respuesta", response)
+                const list = response.data && response.data.results ? response.data.results : []
+                this.setState ({ list: response.results })
+            })
+            .catch(error => {
+                console.log("Error: ", error)
+            })
+    }
+
+    onSelect(heroe){
+        console.log("Heroe", heroe)
+        this.setState({ selected: heroe })
     }
 
     renderItem(item) {
+
+        console.log("Item", item)
         return(
-            <View style={ styles.cellStyle }>
-                <Text> { item.heroeName } </Text>
-                <Text> { item.heroeDescription } </Text>
-            </View>
+            <HeroesCell
+                item={item}
+                onSelect={ (item) => this.onSelect( item ) }
+            />
         )
     }
 
     render(){
-        console.log("This.state.list", this.state.list)
         return(
             <View>
                 <FlatList
                 data={ this.state.list }
                 renderItem={ ({item}) => this.renderItem( item ) }
-                keyExtractor={ ( item ) => item.title}
+                keyExtractor={ ( item ) => item.heroeName}
                 />
 
                 <Text> Texto dummie </Text>
