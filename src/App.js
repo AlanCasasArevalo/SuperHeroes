@@ -6,6 +6,17 @@ import HeroesList from "./sections/heroes/HeroesList";
 
 import * as webservices from "./webservices/webservices";
 
+import {createStore, applyMiddleware, combineReducers} from 'redux'
+import {Provider, connect} from 'react-redux'
+import thunk from 'redux-thunk'
+
+import * as reducers from './redux/reducers'
+
+const reducer = combineReducers(reducers)
+const store = createStore(
+    reducer, applyMiddleware(thunk)
+)
+
 export default class App extends Component {
 
     componentWillMount(){
@@ -14,12 +25,14 @@ export default class App extends Component {
 
   render() {
     return (
-        <Router>
-          <Scene key='root'>
-            <Scene key='heroesList'
-                   component={ HeroesList }/>
-          </Scene>
-        </Router>
+        <Provider store={ store }>
+            <Router>
+              <Scene key='root'>
+                <Scene key='heroesList'
+                       component={ HeroesList }/>
+              </Scene>
+            </Router>
+        </Provider>
     );
   }
 }

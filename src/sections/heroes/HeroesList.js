@@ -1,39 +1,23 @@
-import React, {Component} from 'react'
-import {FlatList, StyleSheet, Text, View} from "react-native";
-import * as AsyncCalls from "../../commons/AsyncCalls";
+import React, { Component } from 'react'
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { fetch } from '../../webservices/webservices'
 import HeroesCell from './HeroesCell'
+import { connect } from 'react-redux'
+import * as heroesActions from '../../redux/actions/heroesActions'
 
-export default class HeroesList extends Component{
 
-    constructor(props){
-        super(props)
-        this.state = {
-            list : [],
-            selected: null
-        }
+class HeroesList extends Component{
+
+    componentDidMount(){
+        this.props.fetchHeroesList()
     }
 
-    componentWillMount(){
-        fetch('/getAllHeroes')
-            .then(response =>{
-                console.log("Respuesta", response)
-                const list = response.data && response.data.results ? response.data.results : []
-                this.setState ({ list: response.results })
-            })
-            .catch(error => {
-                console.log("Error: ", error)
-            })
-    }
-
-    onSelect(heroe){
-        console.log("Heroe", heroe)
-        this.setState({ selected: heroe })
+    onSelect(item){
+        // this.setState({ selected: item })
     }
 
     renderItem(item) {
 
-        console.log("Item", item)
         return(
             <HeroesCell
                 item={item}
@@ -43,20 +27,46 @@ export default class HeroesList extends Component{
     }
 
     render(){
+        console.log("this.props HOUSELIST", this.props.list)
+
         return(
             <View>
                 <FlatList
-                data={ this.state.list }
+                data={ this.props.list }
                 renderItem={ ({item}) => this.renderItem( item ) }
-                keyExtractor={ ( item ) => item.heroeName}
+                keyExtractor={ ( item ) => item.heroName}
+                extraData={ this.state }
                 />
-
-                <Text> Texto dummie </Text>
             </View>
         )
     }
 
 }
+
+
+
+const mapStateToProps = ( state ) => {
+    console.log("mapDispatchToProps Estado global del la app", state)
+
+    return {
+        list: state.heroesReducers.list
+    }
+}
+
+const mapDispatchToProps = ( dispatch, props ) => {
+
+    return {
+        fetchHeroesList : () => {
+            dispatch(heroesActions.fetchHeroesList())
+        },
+
+        updateHeroSelected:() => {
+
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroesList)
 
 const styles = StyleSheet.create({
     container: {
@@ -65,7 +75,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
-    cellStyle:{ height: 200,
+    cellStyle:{
+        height: '100%',
         backgroundColor: 'red',
         marginVertical: 10
     }
