@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export function fetchSuperHeroes() {
+export function fetchCharacter() {
     const fetchURL = '/getAllHeroes'
     // const fetchURL = '/casas'
     console.log("FetchURL", axios.get(fetchURL))

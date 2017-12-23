@@ -1,5 +1,5 @@
-import heroesReducers from './heroesReducers'
+import seriesReducers from './charactersReducers'
 
 export {
-    heroesReducers
+    seriesReducers
 }

@@ -1,25 +1,25 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { fetch } from '../../webservices/webservices'
-import HeroesCell from './HeroesCell'
+import SeriesCell from './CharactersCell'
 import { connect } from 'react-redux'
-import * as heroesActions from '../../redux/actions/heroesActions'
+import * as charactersActions from '../../redux/actions/charactersActions'
 
 
-class HeroesList extends Component{
+class CharactersList extends Component{
 
-    componentDidMount(){
-        this.props.fetchHeroesList()
+    componentWillMount(){
+        this.props.fetchSeriesList()
     }
 
     onSelect(item){
-        // this.setState({ selected: item })
+        this.props.updateCharacterSelected(item)
     }
 
     renderItem(item) {
 
         return(
-            <HeroesCell
+            <SeriesCell
                 item={item}
                 onSelect={ (item) => this.onSelect( item ) }
             />
@@ -27,14 +27,12 @@ class HeroesList extends Component{
     }
 
     render(){
-        console.log("this.props HOUSELIST", this.props.list)
-
         return(
             <View>
                 <FlatList
                 data={ this.props.list }
                 renderItem={ ({item}) => this.renderItem( item ) }
-                keyExtractor={ ( item ) => item.heroName}
+                keyExtractor={ ( item ) => item.id }
                 extraData={ this.state }
                 />
             </View>
@@ -43,30 +41,26 @@ class HeroesList extends Component{
 
 }
 
-
-
 const mapStateToProps = ( state ) => {
-    console.log("mapDispatchToProps Estado global del la app", state)
-
     return {
-        list: state.heroesReducers.list
+        list: state.seriesReducers.list.results
     }
 }
 
 const mapDispatchToProps = ( dispatch, props ) => {
 
     return {
-        fetchHeroesList : () => {
-            dispatch(heroesActions.fetchHeroesList())
+        fetchSeriesList : () => {
+            dispatch(charactersActions.fetchCharactersList())
         },
 
-        updateHeroSelected:() => {
-
+        updateCharacterSelected: (item ) => {
+            dispatch(charactersActions.updateCharacterSelected( item ))
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeroesList)
+export default connect(mapStateToProps, mapDispatchToProps)(CharactersList)
 
 const styles = StyleSheet.create({
     container: {

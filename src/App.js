@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux'
-import HeroesList from "./sections/heroes/HeroesList";
+import CharactersList from "./sections/characters/CharactersList";
 
 import * as webservices from "./webservices/webservices";
 
 import {createStore, applyMiddleware, combineReducers} from 'redux'
-import {Provider, connect} from 'react-redux'
+import { Provider, connect } from 'react-redux'
 import thunk from 'redux-thunk'
 
 import * as reducers from './redux/reducers'
@@ -28,8 +28,8 @@ export default class App extends Component {
         <Provider store={ store }>
             <Router>
               <Scene key='root'>
-                <Scene key='heroesList'
-                       component={ HeroesList }/>
+                <Scene key='charactersList'
+                       component={ CharactersList }/>
               </Scene>
             </Router>
         </Provider>
