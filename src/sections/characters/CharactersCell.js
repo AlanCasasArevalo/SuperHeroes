@@ -10,7 +10,7 @@ export default class CharactersCell extends Component{
 
     render() {
         const { item, onSelect } = this.props
-        console.log("item en CharactersCell", item)
+        // console.log("item en CharactersCell", item)
 
         const imageURL = item.thumbnail ? { uri: item.thumbnail.path + '/landscape_medium.' + item.thumbnail.extension } : null
         const name = item.name ? item.name : "No name for this characters."
@@ -18,37 +18,52 @@ export default class CharactersCell extends Component{
         return (
 
             <TouchableOpacity
-                style={ styles.container }
                 onPress={ () => {
                     this.props.onSelect( this.props.item )
                 }}
             >
+
                 <Image
-                    style={ styles.cellStyle }
-                    source={imageURL}
-                    resizeMode={'cover'}
+                    style={ styles.imageStyle }
+                    source={ imageURL }
+                    resizeMode={ 'cover' }
                 />
 
-                <Text>
-                    { name }
-                </Text>
+                <View style={ styles.textContainer }>
+                    <Text style={ styles.textName }>
+                        { name }
+                    </Text>
+                </View>
 
             </TouchableOpacity>
         )
     }
 }
 
+// center,
+//     contain,
+//     cover,
+//     repeat,
+//     stretch
+
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#D54524',
-    },
-    cellStyle:{
+    imageStyle:{
         width: '100%',
-        height: 100,
-        marginVertical: 10
+        height: 200,
+    },
+    textContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position:'absolute',
+        bottom:0,
+        right:0,
+        left:0,
+        backgroundColor: 'rgba(255,255,255,0.1)'
+    },
+    textName: {
+        fontSize: 20,
+        textAlign:'center'
     }
 });
 

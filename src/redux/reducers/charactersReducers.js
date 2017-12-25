@@ -10,16 +10,27 @@ export default function reducer (state = initialState, action = {}) {
 
     switch (action.type){
 
-        case types.CHARACTERS_SET_FETCHING:
+        case types.CHARACTERS_UPDATE_LIST:
             return {
                 ...state,
                 list: action.value
             }
 
-        case types.CHARACTERS_UPDATE_SERIE:
+        case types.CHARACTERS_UPDATE_CHARACTER:
             return {
                 ...state,
-                list: action.value
+                item: action.value
+            }
+
+        case types.CHARACTERS_SET_FETCHING:
+            return {
+                ...state,
+                isFetching: action.value
+            }
+        case types.CHARACTERS_UPDATE_CHARACTER_BY_NAME:
+            return {
+                ...state,
+                item : action.value
             }
 
         default:

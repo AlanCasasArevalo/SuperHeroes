@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { fetch } from '../../webservices/webservices'
-import SeriesCell from './CharactersCell'
+import CharactersCell from './CharactersCell'
 import { connect } from 'react-redux'
 import * as charactersActions from '../../redux/actions/charactersActions'
+import { Actions } from "react-native-router-flux";
+
+// import {fetchCharactersListByName} from "../../redux/actions/charactersActions";
 
 
 class CharactersList extends Component{
 
     componentWillMount(){
-        this.props.fetchSeriesList()
+        this.props.fetchCharactersList()
+        // this.props.fetchCharactersListByName('wolverine')
+        // console.log("componentWillMount,fetchCharactersListByName ", this.props.fetchCharactersListByName('wolverine'))
     }
 
     onSelect(item){
@@ -19,21 +23,23 @@ class CharactersList extends Component{
     renderItem(item) {
 
         return(
-            <SeriesCell
-                item={item}
-                onSelect={ (item) => this.onSelect( item ) }
+            <CharactersCell
+                item={ item }
+                onSelect={ ( item ) => this.onSelect( item ) }
             />
         )
     }
 
     render(){
+        console.log("this.props.item", this.props.item)
+
         return(
-            <View>
+            <View style={styles.container}>
                 <FlatList
                 data={ this.props.list }
                 renderItem={ ({item}) => this.renderItem( item ) }
-                keyExtractor={ ( item ) => item.id }
-                extraData={ this.state }
+                keyExtractor={ ( item, index ) => index }
+                extraData={ this.props }
                 />
             </View>
         )
@@ -43,20 +49,26 @@ class CharactersList extends Component{
 
 const mapStateToProps = ( state ) => {
     return {
-        list: state.seriesReducers.list.results
+        list: state.charactersReducers.list.results,
+        item: state.charactersReducers.item
     }
 }
 
 const mapDispatchToProps = ( dispatch, props ) => {
 
     return {
-        fetchSeriesList : () => {
+        fetchCharactersList : () => {
             dispatch(charactersActions.fetchCharactersList())
         },
 
-        updateCharacterSelected: (item ) => {
+        updateCharacterSelected: ( item ) => {
             dispatch(charactersActions.updateCharacterSelected( item ))
-        }
+            Actions.CharacterDetail( { title: item.name } )
+        },
+
+        // fetchCharactersListByName( item ){
+        //     dispatch(charactersActions.fetchCharactersListByName( item ))
+        // }
     }
 }
 
@@ -65,14 +77,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(CharactersList)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    cellStyle:{
-        height: '100%',
-        backgroundColor: 'red',
-        marginVertical: 10
     }
 });
 

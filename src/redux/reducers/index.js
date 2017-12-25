@@ -1,5 +1,5 @@
-import seriesReducers from './charactersReducers'
+import charactersReducers from './charactersReducers'
 
 export {
-    seriesReducers
+    charactersReducers
 }
