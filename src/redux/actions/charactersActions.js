@@ -1,12 +1,21 @@
 import * as types from '../types/charactersTypes'
 import { fetch } from '../../webservices/webservices'
+import * as qs from "qs";
 
 
 
-function updateCharactersList(value) {
+function updateCharactersList(list, total) {
     return {
         type: types.CHARACTERS_UPDATE_LIST,
-        value
+        list,
+        total
+    }
+}
+
+export function updateCharactersListOffset(value) {
+    return {
+        type: types.CHARACTERS_UPDATE_LIST_OFFSET,
+        value,
     }
 }
 
@@ -24,56 +33,68 @@ export function updateCharacterSelected( value ) {
     }
 }
 
-
-// export function fetchCharacterByName( value ){
-//     return {
-//         type: types.CHARACTERS_UPDATE_CHARACTER_BY_NAME,
-//         value
-//     }
-// }
-//
-// export function fetchCharactersListByName( characterName ){
-//     // https://gateway.marvel.com:443/v1/public/characters?name=wolverine&apikey=07914c03a174ab378544fa47df86621a
-//     //https://gateway.marvel.com:443/v1/public/characters?name=wolverine&limit=50&offset=50&apikey=07914c03a174ab378544fa47df86621a
-//         return(dispatch, getState) => {
-//             const fetchURL = `/characters?name=${characterName}&limit=50&offset=50`
-//
-//             fetch(fetchURL)
-//                 .then(response =>{
-//                     const item = response.data
-//                     console.log("fetchCharactersListByName response", response)
-//                     console.log("fetchURL", fetchURL)
-//                     dispatch(fetchCharacterByName( item ))
-//                 })
-//                 .catch(error => {
-//                     console.log("Error: ", error)
-//                 })
-//
-//         }
-// }
-
-export function fetchCharactersList(){
-    
+export function initCharactersList() {
     return(dispatch, getState) => {
 
-        dispatch(setCharactersFetching(true))
-        const fetchURL = '/characters?limit=5&offset=5'
-        
-        fetch(fetchURL)
-        .then(response =>{
-                dispatch(setCharactersFetching( false ))
-                const list = response.data
-                dispatch(updateCharactersList(list))
-            })
-            .catch(error => {
-                dispatch(setCharactersFetching( false ))
-                console.log("Error: ", error)
-            })
+        dispatch(updateCharactersList( [], 0 ))
+        dispatch(updateCharactersListOffset( 0 ))
+        dispatch(fetchCharactersList())
 
     }
 }
 
 
+export function fetchCharactersListByName( characterName ){
+        return(dispatch, getState) => {
+            // const fetchURL = '/characters?name=abyss'
+            const fetchURL = `/characters?name=${characterName}`
+
+            fetch(fetchURL)
+                .then(response =>{
+                    const item = response.data
+                    console.log("fetchCharactersListByName response", response)
+                    console.log("fetchURL", fetchURL)
+                    dispatch(updateCharactersList(item))
+                })
+                .catch(error => {
+                    console.log("Error: ", error)
+                })
+
+        }
+}
+
+export function fetchCharactersList(){
+
+    return(dispatch, getState) => {
+
+        dispatch(setCharactersFetching(true))
+
+        const state = getState()
+        const list = state.charactersReducers.list
+        const offset = state.charactersReducers.offset
+        const limit = 10
+        const filters = {
+            offset: offset,
+            limit : limit
+        }
+
+        // const fetchURL = '/characters?limit=100&offset=0'
+        const fetchURL = '/characters?' + qs.stringify(filters)
+        console.log("fetchURL: ", fetchURL)
+
+        fetch(fetchURL)
+        .then(response =>{
+            dispatch(setCharactersFetching(false))
+            const newList = [...list, ...response.data.results]
+            dispatch(updateCharactersList(newList, response.data.total))
+        })
+        .catch(error => {
+            dispatch(setCharactersFetching(false))
+            console.log("Error: ", error)
+        })
+
+    }
+}
 
 
 
