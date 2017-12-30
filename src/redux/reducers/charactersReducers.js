@@ -42,7 +42,7 @@ export default function reducer (state = initialState, action = {}) {
                 item : action.value
             }
 
-        default:
+            default:
             return state
     }
 }

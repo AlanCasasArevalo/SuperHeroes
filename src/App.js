@@ -33,7 +33,9 @@ export default class App extends Component {
               <Scene key='root'>
                 <Scene key='charactersList'
                        component={ CharactersList }
-                       hideNavBar
+                       title={'SuperHeroes'}
+                       navigationBarStyle={styles.navBar}
+                       navBarButtonColor={'white'}
                 />
                   <Scene key='CharacterDetail'
                          component={ CharacterDetail }
