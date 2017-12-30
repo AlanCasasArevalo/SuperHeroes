@@ -1,33 +1,52 @@
 import React, { Component } from 'react'
-import {Button, Image, StyleSheet, Text, View} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import HeroesActions from '../../redux/reducers/charactersReducers'
 
 class CharacterDetail extends Component{
 
-    linkButtonPressed(){
+    // linkButtonPressed(){
+    //     console.log("linkButtonPressed pulsado")
+    // }
+
+
+    renderItem(item) {
+
+        return(
+            <View>
+                <Text>{ item.name }</Text>
+            </View>
+        )
 
     }
-
-
     render() {
         const { character } = this.props
-        console.log("mapStateToProps CharacterDetail: ",character)
+        const comics = character.comics
+
+        console.log("mapStateToProps CharacterDetail: ", character)
         const characterImage =  character && character.thumbnail ? { uri: character.thumbnail.path + '/landscape_medium.' + character.thumbnail.extension } : null
         const characterName = character && character.name
         // const characterWiki = character.
 
         return (
-            <View>
+            <View style={styles.container}>
                 <Image
                     style={ styles.imageStyle }
                     source={ characterImage }
                     resizeMode={ 'cover' }
                 />
-                <Button title={ `Mas sobre ${characterName}` }
-                onPress={() => this.linkButtonPressed()}
-                />
+                {/*<Button title={ `Mas sobre ${characterName}` }*/}
+                {/*onPress={() => this.linkButtonPressed()}*/}
+                {/*/>*/}
+
                 <Text>Aparece en: </Text>
+                <FlatList
+                    data={this.props.character.comics.items}
+                    renderItem={ ({item}) => this.renderItem( item ) }
+                    keyExtractor={ ( item, index ) => index }
+                    extraData={ this.props }
+                />
+
             </View>
         )
     }
@@ -46,6 +65,9 @@ export default connect(mapStateToProps, null)(CharacterDetail)
 
 
 const styles = StyleSheet.create({
+    container : {
+        flex: 1
+    },
     imageStyle:{
         width: '100%',
         height: 200,

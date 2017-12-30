@@ -6,6 +6,7 @@ import * as charactersActions from '../../redux/actions/charactersActions'
 import { Actions } from "react-native-router-flux";
 
 
+
 class CharactersList extends Component{
 
     constructor(props){
@@ -15,11 +16,8 @@ class CharactersList extends Component{
 
     onEndReached() {
         if(  this.props.list.length < this.props.total && !this.props.isFetching) {
-            console.log("Dentro de la funcion")
             let newOffset = this.props.offset + 10
-            console.log("newOffset", newOffset)
             this.props.fetchCharactersList(newOffset)
-            console.log("onEndReached newOffset: ", this.props.fetchCharactersList(newOffset))
         }
     }
 
@@ -50,6 +48,7 @@ class CharactersList extends Component{
 
         return(
             <View style={styles.container}>
+
                 <FlatList
                 data={ this.props.list }
                 renderItem={ ({item}) => this.renderItem( item ) }
