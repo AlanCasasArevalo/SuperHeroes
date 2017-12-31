@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
 import * as reducers from './redux/reducers'
+import { Colors } from './commons/index';
 
 const reducer = combineReducers(reducers)
 const store = createStore(
@@ -35,12 +36,12 @@ export default class App extends Component {
                        component={ CharactersList }
                        title={'SuperHeroes'}
                        navigationBarStyle={styles.navBar}
-                       navBarButtonColor={'white'}
+                       navBarButtonColor={Colors.spinnerColor}
                 />
                   <Scene key='CharacterDetail'
                          component={ CharacterDetail }
                          navigationBarStyle={styles.navBar}
-                         navBarButtonColor={'white'}
+                         navBarButtonColor={Colors.spinnerColor}
                   />
               </Scene>
             </Router>
@@ -56,6 +57,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
     navBar: {
-      backgroundColor: 'rgb(36,36,36)'
+      backgroundColor: Colors.backgroundColor,
     }
 });

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {Button, FlatList, Image, StyleSheet, Text, View} from "react-native";
-import {connect} from "react-redux";
+import { Button, FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
 import HeroesActions from '../../redux/reducers/charactersReducers'
+import { Colors } from '../../commons/index';
 
-class CharacterDetail extends Component{
+class CharacterDetail extends Component {
 
     // linkButtonPressed(){
     //     console.log("linkButtonPressed pulsado")
@@ -11,29 +12,28 @@ class CharacterDetail extends Component{
 
 
     renderItem(item) {
-
-        return(
+        return (
             <View>
-                <Text>{ item.name }</Text>
+                <Text>{item.name}</Text>
             </View>
         )
-
     }
+
     render() {
         const { character } = this.props
         const comics = character.comics
 
         console.log("mapStateToProps CharacterDetail: ", character)
-        const characterImage =  character && character.thumbnail ? { uri: character.thumbnail.path + '/landscape_medium.' + character.thumbnail.extension } : null
+        const characterImage = character && character.thumbnail ? { uri: character.thumbnail.path + '/landscape_medium.' + character.thumbnail.extension } : null
         const characterName = character && character.name
         // const characterWiki = character.
 
         return (
             <View style={styles.container}>
                 <Image
-                    style={ styles.imageStyle }
-                    source={ characterImage }
-                    resizeMode={ 'cover' }
+                    style={styles.imageStyle}
+                    source={characterImage}
+                    resizeMode={'cover'}
                 />
                 {/*<Button title={ `Mas sobre ${characterName}` }*/}
                 {/*onPress={() => this.linkButtonPressed()}*/}
@@ -42,9 +42,9 @@ class CharacterDetail extends Component{
                 <Text>Aparece en: </Text>
                 <FlatList
                     data={this.props.character.comics.items}
-                    renderItem={ ({item}) => this.renderItem( item ) }
-                    keyExtractor={ ( item, index ) => index }
-                    extraData={ this.props }
+                    renderItem={({ item }) => this.renderItem(item)}
+                    keyExtractor={(item, index) => index}
+                    extraData={this.props}
                 />
 
             </View>
@@ -56,7 +56,7 @@ class CharacterDetail extends Component{
 const mapStateToProps = (state) => {
 
     return {
-        character: state.charactersReducers.item
+        character: state.charactersReducers.item,
     }
 }
 
@@ -65,25 +65,25 @@ export default connect(mapStateToProps, null)(CharacterDetail)
 
 
 const styles = StyleSheet.create({
-    container : {
+    container: {
         flex: 1
     },
-    imageStyle:{
+    imageStyle: {
         width: '100%',
         height: 200,
     },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        position:'absolute',
-        bottom:0,
-        right:0,
-        left:0,
-        backgroundColor: 'rgba(255,255,255,0.1)'
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        backgroundColor: Colors.backgroundColor
     },
     textName: {
         fontSize: 20,
-        textAlign:'center'
+        textAlign: 'center'
     }
 });
 
