@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import { Colors } from '../../commons/index';
 
 export default class CharactersCell extends Component{
 
@@ -56,13 +57,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position:'absolute',
+        textAlign: 'center',
+        alignContent: 'center',
         bottom:0,
         right:0,
         left:0,
-        backgroundColor: 'rgba(255,255,255,0.1)'
+        backgroundColor: Colors.textContainerColor
     },
     textName: {
+        flex:1,
         fontSize: 20,
+        alignItems: 'center',
+        alignContent: 'center',
         textAlign:'center'
     }
 });

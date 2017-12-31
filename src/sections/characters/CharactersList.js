@@ -33,9 +33,8 @@ class CharactersList extends Component {
                 'Estamos sin conexion',
                 'Por favor ve a la configuracion y danos acceso para poder darte los personajes',
                 [
-                    { text: 'Ask me later', onPress: () => console.log('Ask me later pressed') },
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                     { text: 'OK', onPress: () => this.props.initCharactersList() },
+                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                 ],
                 { cancelable: false }
             )
