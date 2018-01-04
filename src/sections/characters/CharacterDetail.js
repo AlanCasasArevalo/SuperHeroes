@@ -14,7 +14,7 @@ class CharacterDetail extends Component {
     renderItem(item) {
         return (
             <View>
-                <Text>{item.name}</Text>
+                <Text style={styles.flatListStyle} >{ item.name }</Text>
             </View>
         )
     }
@@ -39,7 +39,7 @@ class CharacterDetail extends Component {
                 {/*onPress={() => this.linkButtonPressed()}*/}
                 {/*/>*/}
 
-                <Text>Aparece en: </Text>
+                <Text style={styles.titleText}>Aparece en: </Text>
                 <FlatList
                     data={this.props.character.comics.items}
                     renderItem={({ item }) => this.renderItem(item)}
@@ -66,7 +66,8 @@ export default connect(mapStateToProps, null)(CharacterDetail)
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.backgroundColor
     },
     imageStyle: {
         width: '100%',
@@ -81,10 +82,17 @@ const styles = StyleSheet.create({
         left: 0,
         backgroundColor: Colors.backgroundColor
     },
-    textName: {
-        fontSize: 20,
-        textAlign: 'center'
-    }
+    titleText: {
+        fontSize: 25,
+        textAlign: 'center',
+        color : Colors.spinnerColor
+    },
+    flatListStyle: {
+        flex:1,
+        fontSize: 18,
+        backgroundColor: Colors.backgroundColor,
+        color : Colors.spinnerColor
+    },
 });
 
 

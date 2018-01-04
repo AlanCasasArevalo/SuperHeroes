@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position:'absolute',
-        textAlign: 'center',
         alignContent: 'center',
         bottom:0,
         right:0,

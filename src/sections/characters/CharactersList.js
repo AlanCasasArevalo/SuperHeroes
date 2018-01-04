@@ -8,8 +8,6 @@ import * as Colors from '../../commons/Colors'
 
 var Spinner = require('react-native-spinkit');
 
-
-
 class CharactersList extends Component {
 
     constructor(props) {
